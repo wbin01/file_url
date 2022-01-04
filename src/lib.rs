@@ -26,6 +26,12 @@ impl FileUrl {
         // Path
         let path = std_path.parent().unwrap().to_str().unwrap().to_string();
 
+        // Filename
+        let filename = std_path.file_name().unwrap().to_str().unwrap().to_string();
+
+        // Filename without extension
+        let filename_without_extension = String::new();
+
         // Extension
         let mut extension = String::new();
 
@@ -37,22 +43,29 @@ impl FileUrl {
                 // &'ext' -> ext.to_str().unwrap()
                 let ext = ext.to_str().unwrap();
 
+                // Ja foram tratados os arquivos que retornam "" para ext:
+                // ("file", ".file", "file.", ".file.")
                 if ext != "" {
-                    //
+                    // Tratar "tar.ext"
+                    // assert_eq!(
+                    //     Some(OsStr::new("tar")),
+                    //     Path::new().extension()
+                    // );
+                    
+                    let in_filename = &filename[..(filename.len() - ext.len() - 1)];
 
-                    // Format extension
-                    extension.push_str(ext);
-                    extension.insert(0, '.');
+                    if Path::new(in_filename).extension() == Some(OsStr::new("tar")) {
+                        extension.push_str(".tar.");
+                        extension.push_str(ext);
+
+                    } else {
+                        extension.push_str(ext);
+                        extension.insert(0, '.');
+                    }
                 }
             },
             None => ()
         }
-
-        // Filename
-        let filename = std_path.file_name().unwrap().to_str().unwrap().to_string();
-
-        // Filename without extension
-        let filename_without_extension = String::new();
 
         // FileUrl
         FileUrl {
@@ -93,33 +106,49 @@ mod tests {
     #[test]
     fn general_test() {
         let hash_files_list = vec![
-            HashMap::from([
-                ("url", "/home/user/file.txt"),
-                ("path", "/home/user"),
-                ("filename", "file.txt"),
-                ("filename_without_extension", "file"),
-                ("extension", ".txt"),
-            ]),
-            HashMap::from([
+            HashMap::from([ // file.txt
                 ("url", "/home/alien/video.mp4"),
                 ("path", "/home/alien"),
                 ("filename", "video.mp4"),
                 ("filename_without_extension", "video"),
                 ("extension", ".mp4"),
             ]),
-            HashMap::from([
-                ("url", "/home/unix/.hiddendoc"),
-                ("path", "/home/unix"),
-                ("filename", ".hiddendoc"),
-                ("filename_without_extension", ".hiddendoc"),
-                ("extension", ""),
-            ]),
-            HashMap::from([
+            HashMap::from([ // file
                 ("url", "/home/unix/doc"),
                 ("path", "/home/unix"),
                 ("filename", "doc"),
                 ("filename_without_extension", "doc"),
                 ("extension", ""),
+            ]),
+            // Anomalias
+            HashMap::from([ // .file
+                ("url", "/home/unix/.doc"),
+                ("path", "/home/unix"),
+                ("filename", ".doc"),
+                ("filename_without_extension", ".doc"),
+                ("extension", ""),
+            ]),
+            HashMap::from([ // file.
+                ("url", "/home/unix/doc."),
+                ("path", "/home/unix"),
+                ("filename", "doc."),
+                ("filename_without_extension", "doc."),
+                ("extension", ""),
+            ]),
+            HashMap::from([ // .file.
+                ("url", "/home/unix/.doc."),
+                ("path", "/home/unix"),
+                ("filename", ".doc."),
+                ("filename_without_extension", ".doc."),
+                ("extension", ""),
+            ]),
+            // Duplas
+            HashMap::from([ // file.tar.gz
+                ("url", "/home/unix/doc.tar.gz"),
+                ("path", "/home/unix"),
+                ("filename", "doc.tar.gz"),
+                ("filename_without_extension", "doc"),
+                ("extension", ".tar.gz"),
             ]),
         ];
 
@@ -165,7 +194,8 @@ mod tests {
 
     #[test]
     fn url_path_test() {
-        // 
+        //
+        assert_eq!(Some(OsStr::new("rs")), Path::new("/home/foo.rs").extension());
         assert_eq!(Some(OsStr::new("rs")), Path::new("foo.rs").extension());
         assert_eq!(Some(OsStr::new("gz")), Path::new("foo.tar.gz").extension());
         assert_eq!(Some(OsStr::new("tar")), Path::new("foo.tar").extension());
