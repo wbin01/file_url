@@ -12,14 +12,19 @@ pub struct FileUrl {
 
 impl FileUrl {
     pub fn new(url: &str) -> FileUrl {
-
-        let std_path = Path::new(url);
         // Path::new(url) -> &std::path::Path
         //   .parent()    -> Option(Some(&std::path::Path))
         //   .unwrap()    -> &std::path::Path
         //   .to_str()    -> Option(&"/path")
         //   .unwrap()    -> &"/path"
         //   .to_string() -> String::new("/path")
+        let std_path = Path::new(url);
+
+        // Url
+        let url = url.to_string();
+
+        // Path
+        let path = std_path.parent().unwrap().to_str().unwrap().to_string();
 
         // Extension
         let mut extension = String::new();
@@ -28,22 +33,34 @@ impl FileUrl {
             // Abstrair 'match' somente até Some e None, pq
             // para "", tem retorno que é Some(...("")) e None.
             Some(ext) => {
-                // Ex:
-                assert_eq!(Some(OsStr::new("rs")), Path::new("foo.rs").extension());
+                // ext -> Some(OsStr::new("ext"))
+                // &'ext' -> ext.to_str().unwrap()
+                let ext = ext.to_str().unwrap();
 
-                // Format extension
-                extension.push_str(ext.to_str().unwrap());
-                extension.insert(0, '.');
+                if ext != "" {
+                    //
+
+                    // Format extension
+                    extension.push_str(ext);
+                    extension.insert(0, '.');
+                }
             },
             None => ()
         }
 
+        // Filename
+        let filename = std_path.file_name().unwrap().to_str().unwrap().to_string();
+
+        // Filename without extension
+        let filename_without_extension = String::new();
+
+        // FileUrl
         FileUrl {
-            url: url.to_string(),
-            path: std_path.parent().unwrap().to_str().unwrap().to_string(),
-            filename: std_path.file_name().unwrap().to_str().unwrap().to_string(),
-            filename_without_extension: String::new(),
-            extension: extension,
+            url,
+            path,
+            filename,
+            filename_without_extension,
+            extension,
         }
     }
 
