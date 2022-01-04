@@ -152,8 +152,8 @@ mod tests {
                 ("filename_without_extension", "file.2"),
                 ("extension", ".tar.gz"),
             ]),
-            // Url
-            HashMap::from([ // file:///c/
+            // Url Windows
+            HashMap::from([ // file:///c:/
                 ("url", "file:///c:/test/example/file.txt"),
                 ("path", "file:///c:/test/example"),
                 ("filename", "file.txt"),
@@ -174,6 +174,7 @@ mod tests {
                 ("filename_without_extension", "file"),
                 ("extension", ".txt"),
             ]),
+
         ];
 
         for hash_file in hash_files_list {
@@ -209,25 +210,20 @@ mod tests {
         let url_list = vec![
             "/home/user/video.mp4",
             "/home/user/file.txt",
-
             "file:///c:/test/example/file.txt",
             "file:c:/test/example/file.txt",
             "c:/test/example/file.txt",
         ];
-        /*
-        ID  Local file URL or remote    Example
-        A   Local   file:///c:\test\example\
-        B   Local   file:c:/test/example/
-        C   Local   c:\test\example\
-        D   Remote  file:///\\server\share\
-        E   Remote  file://server/share/
-        F   Remote  \\server\share\
-        */
 
         for url_item in url_list {
             let file_uri = FileUrl::new(&url_item);
 
             assert_eq!(file_uri.url(), &url_item.to_string());
         }
+    }
+
+    #[test]
+    fn path_test() {
+        //
     }
 }
