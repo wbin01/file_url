@@ -152,6 +152,28 @@ mod tests {
                 ("filename_without_extension", "file.2"),
                 ("extension", ".tar.gz"),
             ]),
+            // Url
+            HashMap::from([ // file:///c/
+                ("url", "file:///c:/test/example/file.txt"),
+                ("path", "file:///c:/test/example"),
+                ("filename", "file.txt"),
+                ("filename_without_extension", "file"),
+                ("extension", ".txt"),
+            ]),
+            HashMap::from([ // file:c:/
+                ("url", "file:c:/test/example/file.txt"),
+                ("path", "file:c:/test/example"),
+                ("filename", "file.txt"),
+                ("filename_without_extension", "file"),
+                ("extension", ".txt"),
+            ]),
+            HashMap::from([ // c:/
+                ("url", "c:/test/example/file.txt"),
+                ("path", "c:/test/example"),
+                ("filename", "file.txt"),
+                ("filename_without_extension", "file"),
+                ("extension", ".txt"),
+            ]),
         ];
 
         for hash_file in hash_files_list {
@@ -187,7 +209,20 @@ mod tests {
         let url_list = vec![
             "/home/user/video.mp4",
             "/home/user/file.txt",
+
+            "file:///c:/test/example/file.txt",
+            "file:c:/test/example/file.txt",
+            "c:/test/example/file.txt",
         ];
+        /*
+        ID  Local file URL or remote    Example
+        A   Local   file:///c:\test\example\
+        B   Local   file:c:/test/example/
+        C   Local   c:\test\example\
+        D   Remote  file:///\\server\share\
+        E   Remote  file://server/share/
+        F   Remote  \\server\share\
+        */
 
         for url_item in url_list {
             let file_uri = FileUrl::new(&url_item);
