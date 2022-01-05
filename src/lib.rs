@@ -54,7 +54,7 @@ impl FileUrl {
 
         match std_path.extension() {
             Some(ext) => {  // ext -> Some(OsStr::new("ext"))
-                let ext = ext.to_str().unwrap();  // &'ext' -> ext.to_str().unwrap()
+                let ext = ext.to_str().unwrap();
 
                 if ext != "" {  // Tratar extensão dupla, como "tar.gz".
                     let (filename_len, ext_len) = (filename.len(), ext.len());
@@ -66,12 +66,12 @@ impl FileUrl {
                             extension.push_str(".tar.");
                             extension.push_str(ext);
                         } else {
+                            extension.push_str(".");
                             extension.push_str(ext);
-                            extension.insert(0, '.');
                         }
                     } else {
+                        extension.push_str(".");
                         extension.push_str(ext);
-                        extension.insert(0, '.');
                     }
                 }
             },
