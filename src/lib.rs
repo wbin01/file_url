@@ -1,3 +1,23 @@
+//! # Crate file_url
+//!
+//! `file_url` is a structure to conveniently separate
+//! the url parts of a file, such as path, name and extension. 
+
+/// Adds one to the number given.
+///
+/// # Examples
+///
+/// ```
+/// use file_url::FileUrl;
+///
+/// let my_file_url = "/home/user/package.tar.gz";
+/// let my_file = FileUrl::new(&my_file_url);
+///
+/// assert_eq!(my_file.path(), "/home/user");
+/// assert_eq!(my_file.filename(), "package.tar.gz");
+/// assert_eq!(my_file.filename_without_extension(), "package");
+/// assert_eq!(my_file.extension(), ".tar.gz");
+/// ```
 use std::path::Path;
 use std::ffi::OsStr;
 
@@ -33,23 +53,22 @@ impl FileUrl {
         let mut extension = String::new();
 
         match std_path.extension() {
-            // Abstrair 'match' somente até Some e None, pq
-            // para ext "", tem retorno que é Some(...("")) e None.
-            Some(ext) => {
-                // ext -> Some(OsStr::new("ext"))
-                // &'ext' -> ext.to_str().unwrap()
-                let ext = ext.to_str().unwrap();
+            Some(ext) => {  // ext -> Some(OsStr::new("ext"))
+                let ext = ext.to_str().unwrap();  // &'ext' -> ext.to_str().unwrap()
 
-                // Ja foram tratados os arquivos que retornam "" para ext:
-                // ("file", ".file", "file.", ".file.")
-                if ext != "" {
-                    // Tratar extensão dupla, como "tar.gz".
-                    let in_filename = &filename[..(filename.len() - ext.len() - 1)];
+                if ext != "" {  // Tratar extensão dupla, como "tar.gz".
+                    let (filename_len, ext_len) = (filename.len(), ext.len());
 
-                    if Path::new(in_filename).extension() == Some(OsStr::new("tar")) {
-                        extension.push_str(".tar.");
-                        extension.push_str(ext);
+                    if filename_len - ext_len > 5 {  // 5 = ".tar.".len()
+                        let in_filename = &filename[..(filename_len - ext_len - 1)];
 
+                        if Path::new(in_filename).extension() == Some(OsStr::new("tar")) {
+                            extension.push_str(".tar.");
+                            extension.push_str(ext);
+                        } else {
+                            extension.push_str(ext);
+                            extension.insert(0, '.');
+                        }
                     } else {
                         extension.push_str(ext);
                         extension.insert(0, '.');
@@ -95,10 +114,35 @@ impl FileUrl {
 
 #[cfg(test)]
 mod tests {
-    // use super::*;
+    use super::*;
 
     #[test]
-    fn test() {
-        //
+    fn file_url_test() {
+        let my_file = FileUrl::new("/home/user/package.tar.gz");
+        
+        assert_eq!(my_file.path(), "/home/user");
+        assert_eq!(my_file.filename(), "package.tar.gz");
+        assert_eq!(my_file.filename_without_extension(), "package");
+        assert_eq!(my_file.extension(), ".tar.gz");
+    }
+
+    #[test]
+    fn small_file_url_test() {
+        let my_file = FileUrl::new("/home/user/f.tar.bz");
+        
+        assert_eq!(my_file.path(), "/home/user");
+        assert_eq!(my_file.filename(), "f.tar.bz");
+        assert_eq!(my_file.filename_without_extension(), "f");
+        assert_eq!(my_file.extension(), ".tar.bz");
+    }
+
+    #[test]
+    fn big_file_url_test() {
+        let my_file = FileUrl::new("/home/user/file-2022_01_01 (2) #My [1].tar.bz");
+        
+        assert_eq!(my_file.path(), "/home/user");
+        assert_eq!(my_file.filename(), "file-2022_01_01 (2) #My [1].tar.bz");
+        assert_eq!(my_file.filename_without_extension(), "file-2022_01_01 (2) #My [1]");
+        assert_eq!(my_file.extension(), ".tar.bz");
     }
 }
