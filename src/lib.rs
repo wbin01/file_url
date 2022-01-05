@@ -95,84 +95,10 @@ impl FileUrl {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    // use super::*;
 
     #[test]
-    fn url_test() {
-        assert_eq!(
-            FileUrl::new("/home/user/file.txt").url(),
-            "/home/user/file.txt");
-        assert_eq!(
-            FileUrl::new("file:///c:/test/example/file.txt").url(),
-            "file:///c:/test/example/file.txt"
-        );
-    }
-
-    #[test]
-    fn path_test() {
-        assert_eq!(
-            FileUrl::new("/home/user/file.txt").path(),
-            "/home/user"
-        );
-        assert!(
-            FileUrl::new("/home/user/file.txt").path()
-            != "/home/user/"
-        );
-        assert_eq!(
-            FileUrl::new("file:///c:/test/example/file.txt").path(),
-            "file:///c:/test/example"
-        );
-        assert!(
-            FileUrl::new("file:///c:/test/example/file.txt").path()
-            != "file:///c:/test/example/"
-        );
-        assert_eq!(
-            FileUrl::new("file:c:/test/example/file.txt").path(),
-            "file:c:/test/example"
-        );
-        assert_eq!(
-            FileUrl::new("c:/test/example/file.txt").path(),
-            "c:/test/example"
-        );
-    }
-
-    #[test]
-    fn filename_test() {
-        assert_eq!(FileUrl::new("/home/file.txt").filename(), "file.txt");
-        assert_eq!(FileUrl::new("/home/.file.txt").filename(), ".file.txt");
-        assert_eq!(FileUrl::new("/home/file.txt.").filename(), "file.txt.");
-        assert_eq!(FileUrl::new("/home/.file.txt.").filename(), ".file.txt.");
-        assert_eq!(FileUrl::new("/home/file_2.txt").filename(), "file_2.txt");
-    }
-
-    #[test]
-    fn filename_without_extension_test() {
-        assert_eq!(
-            FileUrl::new("/home/user/file.txt").filename_without_extension(),
-            "file"
-        );
-        assert_eq!(
-            FileUrl::new("/home/user/.file.txt").filename_without_extension(),
-            ".file"
-        );
-        assert_eq!(
-            FileUrl::new("/home/user/file.txt.").filename_without_extension(),
-            "file.txt."
-        );
-        assert_eq!(
-            FileUrl::new("/home/user/.file.txt.").filename_without_extension(),
-            ".file.txt."
-        );
-    }
-
-    #[test]
-    fn extension_test() {
-        assert_eq!(FileUrl::new("/home/file.txt").extension(), ".txt");
-        assert_eq!(FileUrl::new("/home/.file.txt").extension(), ".txt");
-        assert_eq!(FileUrl::new("/home/file.txt.").extension(), "");
-        assert_eq!(FileUrl::new("/home/.file.txt.").extension(), "");
-        assert_eq!(FileUrl::new("/home/.file.txt.pdf").extension(), ".pdf");
-        assert_eq!(FileUrl::new("/home/.file.tar.gz").extension(), ".tar.gz");
-        assert_eq!(FileUrl::new("/home/.file.2.tar.gz").extension(), ".tar.gz");
+    fn test() {
+        //
     }
 }
