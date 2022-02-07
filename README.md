@@ -2,6 +2,9 @@
 
 A `struct` in Rust to slice url files
 
+https://github.com/w-a-gomes/file_url
+
+Example:
 ```rust
 use file_url::FileUrl;
 
