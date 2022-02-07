@@ -1,6 +1,6 @@
 ## file_url
 
-A `struct` in Rust to slice url files.
+A `struct` in Rust to slice url files
 
 ```rust
 use file_url::FileUrl;
