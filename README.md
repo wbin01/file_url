@@ -9,7 +9,7 @@ Example:
 use file_url::FileUrl;
 
 fn main() {
-    // Double extension file
+    // Internal extension ".tar"
     let my_file = FileUrl::new("/home/user/package.tar.gz");
 
     assert_eq!(my_file.url(), "/home/user/package.tar.gz");
