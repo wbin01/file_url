@@ -12,7 +12,7 @@ fn main() {
     assert_eq!(my_file.url(), "/home/user/package.tar.gz");
     assert_eq!(my_file.path(), "/home/user");
     assert_eq!(my_file.filename(), "package.tar.gz");
-    assert_eq!(my_file.filename_without_extension(), "package");
+    assert_eq!(my_file.name(), "package");
     assert_eq!(my_file.extension(), ".tar.gz");
 
     // Hidden file with extension
@@ -21,7 +21,7 @@ fn main() {
     assert_eq!(my_file.url(), "/home/user/.file.txt");
     assert_eq!(my_file.path(), "/home/user");
     assert_eq!(my_file.filename(), ".file.txt");
-    assert_eq!(my_file.filename_without_extension(), ".file");
+    assert_eq!(my_file.name(), ".file");
     assert_eq!(my_file.extension(), ".txt");
 
     // Hidden file without extension
@@ -30,7 +30,7 @@ fn main() {
     assert_eq!(my_file.url(), "/home/user/.bashrc");
     assert_eq!(my_file.path(), "/home/user");
     assert_eq!(my_file.filename(), ".bashrc");
-    assert_eq!(my_file.filename_without_extension(), ".bashrc");
+    assert_eq!(my_file.name(), ".bashrc");
     assert_eq!(my_file.extension(), "");
 
     // Small filename
@@ -39,7 +39,7 @@ fn main() {
     assert_eq!(my_file.url(), "/home/user/f.tar.bz");
     assert_eq!(my_file.path(), "/home/user");
     assert_eq!(my_file.filename(), "f.tar.bz");
-    assert_eq!(my_file.filename_without_extension(), "f");
+    assert_eq!(my_file.name(), "f");
     assert_eq!(my_file.extension(), ".tar.bz");
 
     // Big filename
@@ -48,7 +48,7 @@ fn main() {
     assert_eq!(my_file.url(), "/home/user/file-2022_01_01 (2) #My [1].tar.bz");
     assert_eq!(my_file.path(), "/home/user");
     assert_eq!(my_file.filename(), "file-2022_01_01 (2) #My [1].tar.bz");
-    assert_eq!(my_file.filename_without_extension(), "file-2022_01_01 (2) #My [1]");
+    assert_eq!(my_file.name(), "file-2022_01_01 (2) #My [1]");
     assert_eq!(my_file.extension(), ".tar.bz");
 }
 

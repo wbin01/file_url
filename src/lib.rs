@@ -15,7 +15,7 @@
 ///
 /// assert_eq!(my_file.path(), "/home/user");
 /// assert_eq!(my_file.filename(), "package.tar.gz");
-/// assert_eq!(my_file.filename_without_extension(), "package");
+/// assert_eq!(my_file.name(), "package");
 /// assert_eq!(my_file.extension(), ".tar.gz");
 /// ```
 use std::path::Path;
@@ -26,7 +26,7 @@ pub struct FileUrl {
     url: String,
     path: String,
     filename: String,
-    filename_without_extension: String,
+    name: String,
     extension: String,
 }
 
@@ -79,14 +79,14 @@ impl FileUrl {
         }
 
         // Filename without extension
-        let filename_without_extension = filename[..].replace(&extension, "");
+        let name = filename[..].replace(&extension, "");
 
         // FileUrl
         FileUrl {
             url,
             path,
             filename,
-            filename_without_extension,
+            name,
             extension,
         }
     }
@@ -103,8 +103,8 @@ impl FileUrl {
         &self.filename
     }
 
-    pub fn filename_without_extension(&self) -> &String {
-        &self.filename_without_extension
+    pub fn name(&self) -> &String {
+        &self.name
     }
 
     pub fn extension(&self) -> &String {
@@ -122,7 +122,7 @@ mod tests {
         
         assert_eq!(my_file.path(), "/home/user");
         assert_eq!(my_file.filename(), "package.tar.gz");
-        assert_eq!(my_file.filename_without_extension(), "package");
+        assert_eq!(my_file.name(), "package");
         assert_eq!(my_file.extension(), ".tar.gz");
     }
 
@@ -132,7 +132,7 @@ mod tests {
         
         assert_eq!(my_file.path(), "/home/user");
         assert_eq!(my_file.filename(), "f.tar.bz");
-        assert_eq!(my_file.filename_without_extension(), "f");
+        assert_eq!(my_file.name(), "f");
         assert_eq!(my_file.extension(), ".tar.bz");
     }
 
@@ -142,7 +142,7 @@ mod tests {
         
         assert_eq!(my_file.path(), "/home/user");
         assert_eq!(my_file.filename(), "file-2022_01_01 (2) #My [1].tar.bz");
-        assert_eq!(my_file.filename_without_extension(), "file-2022_01_01 (2) #My [1]");
+        assert_eq!(my_file.name(), "file-2022_01_01 (2) #My [1]");
         assert_eq!(my_file.extension(), ".tar.bz");
     }
 }
