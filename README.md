@@ -2,7 +2,7 @@
 
 A `struct` in Rust to slice url files
 
-https://github.com/w-a-gomes/file_url
+https://github.com/wbin01/file_url
 
 Example:
 ```rust
